@@ -1,1 +1,1 @@
-web: gunicorn arthub.wsgi:application 
+web: uvicorn arthub.asgi:application 
