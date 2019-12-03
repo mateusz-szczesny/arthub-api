@@ -7,6 +7,8 @@ from .models import Item
 from rest_framework.authentication import TokenAuthentication
 from .serializers import ItemSerializer
 from rest_framework.response import Response
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
 
 # Create your views here.
 class ItemsView(
@@ -16,6 +18,9 @@ class ItemsView(
     queryset = Item.objects.all()
     authentication_classes = (TokenAuthentication,)
     serializer_class = ItemSerializer
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
+    filter_fields = ("id", "name", "tags", "owner")
+    search_fields = ("name", "tags")
     permission_classes = (IsAuthenticated,)
     parser_classes = (
         parsers.FormParser,
