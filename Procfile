@@ -1,1 +1,1 @@
-web: uvicorn arhub.asgi:application --host 0.0.0.0 --port $PORT 
+web: uvicorn arthub.asgi:application --host 0.0.0.0 --port $PORT 
