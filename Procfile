@@ -1,1 +1,1 @@
-web: uvicorn arthub.asgi:application
+web: uvicorn --lifespan on arthub.asgi:application 
