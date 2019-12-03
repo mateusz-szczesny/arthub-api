@@ -1,1 +1,1 @@
-web: uvicorn arthub.asgi:application 
+web: uvicorn --host 0.0.0.0 arthub.asgi:application 
