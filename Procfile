@@ -1,1 +1,1 @@
-web: uvicorn arthub.asgi:application --host 0.0.0.0 --port $PORT
+web: gunicorn arthub.asgi:application -w 4 -k uvicorn.workers.UvicornWorker
