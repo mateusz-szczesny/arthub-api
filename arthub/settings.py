@@ -65,7 +65,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "arthub.wsgi.application"
-ASGI_APPLICATION = "arthub.asgi:application"
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
