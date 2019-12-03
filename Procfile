@@ -1,1 +1,1 @@
-web: uvicorn --host 0.0.0.0 arthub.asgi:application 
+web: uvicorn arthub.asgi:application --host 0.0.0.0 --port 8080
