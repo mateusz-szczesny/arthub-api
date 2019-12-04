@@ -11,25 +11,38 @@ class TokenResponseSerializer(serializers.ModelSerializer):
         fields = ("key",)
 
 
-class UserSignUpSerializer(serializers.Serializer):
+class SignUpSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(min_length=8, max_length=20)
+    first_name = serializers.CharField(max_length=30, required=False)
+    last_name = serializers.CharField(max_length=150, required=False)
 
     def create(self, validated_data):
         return User.objects.create_user(
             validated_data["email"],
             validated_data["email"],
             validated_data["password"],
+            first_name=validated_data.get("first_name", ""),
+            last_name=validated_data.get("last_name", ""),
         )
+
+
+class UserDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("id", "username", "email", "first_name", "last_name")
+        extra_kwargs = {"id": {"read_only": True}, "username": {"read_only": True}}
 
     def update(self, instance, validated_data):
         instance.username = validated_data.get("email", instance.email)
         instance.email = validated_data.get("email", instance.email)
+        instance.first_name = validated_data.get("first_name", instance.email)
+        instance.last_name = validated_data.get("last_name", instance.email)
         instance.save()
         return instance
 
 
-class AuthTokenSerializer(serializers.Serializer):
+class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField(label=_("Email"))
     password = serializers.CharField(
         label=_("Password"), style={"input_type": "password"}, trim_whitespace=False
