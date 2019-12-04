@@ -21,7 +21,6 @@ class ItemsView(
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
     filter_fields = ("id", "name", "tags", "owner")
     search_fields = ("name", "tags")
-    permission_classes = (IsAuthenticated,)
     parser_classes = (
         parsers.FormParser,
         parsers.MultiPartParser,

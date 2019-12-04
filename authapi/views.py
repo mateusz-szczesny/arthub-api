@@ -54,7 +54,7 @@ class SignUpUser(APIView):
     serializer_class = UserSignUpSerializer
 
     @swagger_auto_schema(
-        responses={204: "User created", 400: "Bad request"},
+        responses={201: TokenResponseSerializer, 400: "Bad request"},
         operation_description="Sign up new user",
         request_body=UserSignUpSerializer,
     )
@@ -64,8 +64,11 @@ class SignUpUser(APIView):
         )
         serializer.is_valid(raise_exception=True)
         try:
-            serializer.save()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            user = serializer.save()
+            # user = serializer.validated_data["user"]
+            token, _ = Token.objects.get_or_create(user=user)
+            result = TokenResponseSerializer(token)
+            return Response(data=result.data)
         except IntegrityError as e:
             return HttpResponseBadRequest(content=str(e))
 
