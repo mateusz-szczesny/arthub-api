@@ -3,9 +3,9 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status, mixins
 from rest_framework.viewsets import GenericViewSet
-from .models import Item
+from .models import Item, License
 from rest_framework.authentication import TokenAuthentication
-from .serializers import ItemSerializer
+from .serializers import ItemSerializer, LicenseSerializer
 from rest_framework.response import Response
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
@@ -38,4 +38,42 @@ class ItemsView(
         instance = self.get_object()
         print(instance.image.path)
         serializer = ItemSerializer(instance, context={"request": request}, many=False)
+        return Response(serializer.data)
+
+
+class LicenseView(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    GenericViewSet,
+):
+    throttle_classes = ()
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = LicenseSerializer
+    permission_classes = (IsAuthenticated,)
+    parser_classes = (
+        parsers.FormParser,
+        parsers.MultiPartParser,
+        parsers.JSONParser,
+    )
+    renderer_classes = (renderers.JSONRenderer,)
+
+    def get_queryset(self):
+        from django.db.models import Q
+
+        c1 = Q(default=True)
+        c2 = Q(owner__pk=self.request.user.pk)
+        return License.objects.all().filter(c1 | c2)
+
+    def list(self, request, *args, **kwargs):
+        serializer = self.serializer_class(
+            self.get_queryset(), context={"request": request}, many=True
+        )
+        return Response(data=serializer.data)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.serializer_class(
+            instance, context={"request": request}, many=False
+        )
         return Response(serializer.data)

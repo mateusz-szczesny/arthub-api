@@ -20,3 +20,4 @@ class License(models.Model):
     name = models.CharField(max_length=32)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="licenses")
     content = models.CharField(max_length=4096)
+    default = models.BooleanField(default=True)
