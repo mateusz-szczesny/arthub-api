@@ -45,6 +45,7 @@ class LicenseView(
     mixins.ListModelMixin,
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
     GenericViewSet,
 ):
     throttle_classes = ()

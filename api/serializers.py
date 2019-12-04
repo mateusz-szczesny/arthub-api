@@ -12,7 +12,6 @@ class OwnerSerializer(serializers.ModelSerializer):
 class LicenseSerializer(serializers.ModelSerializer):
     class Meta:
         model = License
-        depth = 1
         fields = ("id", "name", "content", "default")
         extra_kwargs = {"id": {"read_only": True}, "default": {"read_only": True}}
 
@@ -26,7 +25,7 @@ class LicenseSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         user = self.context.get("request").user
-        if user.pk == self.owner.data.id:
+        if user.pk == instance.owner.id:
             instance.name = validated_data.get("name", instance.name)
             instance.content = validated_data.get("content", instance.content)
             instance.save()
