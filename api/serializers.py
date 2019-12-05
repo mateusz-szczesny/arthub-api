@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import Item, License
 from django.contrib.auth.models import User
-from drf_extra_fields.fields import Base64ImageField
+from .b64 import Base64ImageField
 
 
 class OwnerSerializer(serializers.ModelSerializer):
@@ -53,7 +53,7 @@ class ItemUploadSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Item
-        fields = ("id", "name", "tags", "image")
+        fields = ("id", "name", "tags", "license", "image")
 
     def create(self, validated_data):
         user = self.context.get("request").user
