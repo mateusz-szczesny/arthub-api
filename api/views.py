@@ -5,10 +5,11 @@ from rest_framework import status, mixins
 from rest_framework.viewsets import GenericViewSet
 from .models import Item, License
 from rest_framework.authentication import TokenAuthentication
-from .serializers import ItemSerializer, LicenseSerializer
+from .serializers import ItemSerializer, LicenseSerializer, ItemUploadSerializer
 from rest_framework.response import Response
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
+from drf_yasg.utils import swagger_auto_schema
 
 # Create your views here.
 class ItemsView(
@@ -39,6 +40,19 @@ class ItemsView(
         print(instance.image.path)
         serializer = ItemSerializer(instance, context={"request": request}, many=False)
         return Response(serializer.data)
+
+
+class UploadImageView(mixins.CreateModelMixin, mixins.UpdateModelMixin, GenericViewSet):
+    throttle_classes = ()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ItemUploadSerializer
+    parser_classes = (
+        parsers.FormParser,
+        parsers.MultiPartParser,
+        parsers.JSONParser,
+    )
+    renderer_classes = (renderers.JSONRenderer,)
 
 
 class LicenseView(

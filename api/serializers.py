@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Item, License
 from django.contrib.auth.models import User
+from drf_extra_fields.fields import Base64ImageField
 
 
 class OwnerSerializer(serializers.ModelSerializer):
@@ -45,4 +46,30 @@ class ItemSerializer(serializers.ModelSerializer):
 
     def get_tags(self, obj):
         return str(obj.tags).split(";")
+
+
+class ItemUploadSerializer(serializers.ModelSerializer):
+    image = Base64ImageField(required=True)
+
+    class Meta:
+        model = Item
+        fields = ("id", "name", "tags", "image")
+
+    def create(self, validated_data):
+        user = self.context.get("request").user
+        validated_data["owner"] = user
+        license = Item(**validated_data)
+        license.save()
+        return license
+
+    def update(self, instance, validated_data):
+        user = self.context.get("request").user
+        if user.pk == instance.owner.id:
+            instance.name = validated_data.get("name", instance.name)
+            instance.tags = validated_data.get("tags", instance.tags)
+            instance.image = validated_data.get("image", instance.image)
+            instance.save()
+            return instance
+        else:
+            return None
 
