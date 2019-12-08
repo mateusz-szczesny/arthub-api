@@ -44,6 +44,7 @@ class ItemsView(
 
 class UploadImageView(mixins.CreateModelMixin, mixins.UpdateModelMixin, GenericViewSet):
     throttle_classes = ()
+    queryset = Item.objects.all()
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
     serializer_class = ItemUploadSerializer
