@@ -29,18 +29,6 @@ class ItemsView(
     )
     renderer_classes = (renderers.JSONRenderer,)
 
-    def list(self, request, *args, **kwargs):
-        serializer = self.serializer_class(
-            self.queryset, context={"request": request}, many=True
-        )
-        return Response(data=serializer.data)
-
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        print(instance.image.path)
-        serializer = ItemSerializer(instance, context={"request": request}, many=False)
-        return Response(serializer.data)
-
 
 class UploadImageView(mixins.CreateModelMixin, mixins.UpdateModelMixin, GenericViewSet):
     throttle_classes = ()
