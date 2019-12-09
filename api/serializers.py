@@ -42,7 +42,7 @@ class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
         depth = 1
-        fields = ("id", "name", "tags", "owner", "image")
+        fields = ("id", "name", "tags", "license", "owner", "image")
 
     def get_tags(self, obj):
         return str(obj.tags).split(";")

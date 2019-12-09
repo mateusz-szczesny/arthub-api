@@ -29,6 +29,23 @@ class ItemsView(
     )
     renderer_classes = (renderers.JSONRenderer,)
 
+    from rest_framework.decorators import action
+
+    @action(detail=False, methods=["get"])
+    @swagger_auto_schema(
+        manual_parameters=None,
+        request_body=None,
+        operation_description="Fetch all tags",
+    )
+    def tags(self, request, *args, **kwargs):
+
+        all_tags = set()
+        for item in self.queryset:
+            tags = item.tags.split(";")
+            for tag in tags:
+                all_tags.add(tag)
+        return Response(data=all_tags)
+
 
 class UploadImageView(mixins.CreateModelMixin, mixins.UpdateModelMixin, GenericViewSet):
     throttle_classes = ()
