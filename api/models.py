@@ -20,6 +20,7 @@ class Item(models.Model):
     )
     owner = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="items")
     image = models.ImageField(upload_to="images/%Y/%m/%d")
+    price = models.DecimalField(max_digits=10, decimal_places=2)
 
     @property
     def image_base64(self):

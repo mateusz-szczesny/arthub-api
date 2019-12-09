@@ -42,7 +42,7 @@ class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
         depth = 1
-        fields = ("id", "name", "tags", "license", "owner", "image")
+        fields = ("id", "name", "tags", "price", "license", "owner", "image")
 
     def get_tags(self, obj):
         return str(obj.tags).split(";")
@@ -53,7 +53,7 @@ class ItemUploadSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Item
-        fields = ("id", "name", "tags", "license", "image")
+        fields = ("id", "name", "tags", "price", "license", "image")
 
     def create(self, validated_data):
         user = self.context.get("request").user

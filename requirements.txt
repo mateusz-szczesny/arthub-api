@@ -17,7 +17,6 @@ cryptography==2.8
 dj-database-url==0.5.0
 Django==3.0
 django-cors-headers==3.2.0
-django-extra-fields==2.0.1
 django-filter==2.2.0
 django-heroku==0.3.1
 djangorestframework==3.10.3
@@ -60,7 +59,6 @@ txaio==18.8.1
 typed-ast==1.4.0
 uritemplate==3.0.0
 urllib3==1.25.7
-uvicorn==0.10.8
 websockets==8.1
 whitenoise==4.1.4
 wrapt==1.11.2
