@@ -11,6 +11,9 @@ class License(models.Model):
     content = models.CharField(max_length=4096)
     default = models.BooleanField(default=True)
 
+    def __str__(self):
+        return f"Name: {self.name} | Abbreviation: {self.content} | Owner: {self.owner.username}"
+
 
 class Item(models.Model):
     name = models.CharField(max_length=128)
@@ -25,4 +28,7 @@ class Item(models.Model):
     @property
     def image_base64(self):
         return image_as_base64(self.image.path)
+
+    def __str__(self):
+        return f"Name: {self.name} | Tags: {self.tags} | Price: {self.price} | Owner: {self.owner.username}"
 
