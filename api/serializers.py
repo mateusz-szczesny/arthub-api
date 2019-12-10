@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Item, License
+from .models import Item, License, Purchase
 from django.contrib.auth.models import User
 from .b64 import Base64ImageField
 
@@ -73,3 +73,13 @@ class ItemUploadSerializer(serializers.ModelSerializer):
         else:
             return None
 
+class PurchaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Purchase
+        fields = ("id", "merchant", "item")
+        depth = 2
+
+class MakePurchaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Purchase
+        fields = ("item",)

@@ -32,3 +32,9 @@ class Item(models.Model):
     def __str__(self):
         return f"Name: {self.name} | Tags: {self.tags} | Price: {self.price} | Owner: {self.owner.username}"
 
+class Purchase(models.Model):
+    merchant = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="purchases")
+    item = models.ForeignKey(Item, on_delete=models.DO_NOTHING, related_name="purchases")
+
+    def __str__(self):
+        return f"Merchant: {self.merchant.username} | Item: {self.item.name}"

@@ -3,11 +3,19 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status, mixins
 from rest_framework.viewsets import GenericViewSet
-from .models import Item, License
+from .models import Item, License, Purchase
 from rest_framework.authentication import TokenAuthentication
-from .serializers import ItemSerializer, LicenseSerializer, ItemUploadSerializer
+from django.http import HttpResponseBadRequest
+from .serializers import (
+    ItemSerializer,
+    LicenseSerializer,
+    ItemUploadSerializer,
+    PurchaseSerializer,
+    MakePurchaseSerializer,
+)
 from rest_framework.response import Response
 from rest_framework import filters
+from drf_yasg import openapi
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg.utils import swagger_auto_schema
 
@@ -98,3 +106,82 @@ class LicenseView(
             instance, context={"request": request}, many=False
         )
         return Response(serializer.data)
+
+
+class PurchaseView(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    GenericViewSet,
+):
+    throttle_classes = ()
+    permission_classes = ()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    parser_classes = (
+        parsers.FormParser,
+        parsers.MultiPartParser,
+        parsers.JSONParser,
+    )
+    serializer_class = PurchaseSerializer
+    renderer_classes = (renderers.JSONRenderer,)
+
+    def get_queryset(self):
+        return Purchase.objects.all().filter(merchant__pk=self.request.user.pk)
+
+    @swagger_auto_schema(
+        responses={201: PurchaseSerializer, 400: "Bad request"},
+        request_body=MakePurchaseSerializer,
+        operation_description="Buy and item",
+    )
+    def post(self, request, *args, **kwargs):
+        serializer = MakePurchaseSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            item = Item.objects.get(pk=serializer.validated_data["item"])
+            print(item)
+            item.pk = None
+            item.save()
+            purchase = Purchase()
+            purchase.merchant = request.user
+            purchase.item = item
+            purchase.save()
+            return Response(
+                data=self.serializer_class(purchase), status=status.HTTP_201_CREATED
+            )
+            return Response()
+        else:
+            return HttpResponseBadRequest()
+
+
+class BuyView(APIView):
+    throttle_classes = ()
+    permission_classes = ()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    parser_classes = (
+        parsers.FormParser,
+        parsers.MultiPartParser,
+        parsers.JSONParser,
+    )
+    serializer_class = MakePurchaseSerializer
+    renderer_classes = (renderers.JSONRenderer,)
+
+    @swagger_auto_schema(
+        responses={201: PurchaseSerializer, 400: "Bad request"},
+        request_body=MakePurchaseSerializer,
+        operation_description="Buy and item",
+    )
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            item = Item.objects.get(pk=serializer.validated_data["item"].pk)
+            item.pk = None
+            item.save()
+            purchase = Purchase()
+            purchase.merchant = request.user
+            purchase.item = item
+            purchase.save()
+            return Response(
+                data=PurchaseSerializer(purchase).data, status=status.HTTP_201_CREATED
+            )
+        else:
+            return HttpResponseBadRequest()

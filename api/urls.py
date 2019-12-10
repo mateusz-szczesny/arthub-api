@@ -9,6 +9,10 @@ router = routers.DefaultRouter()
 router.register(r"items", views.ItemsView)
 router.register(r"upload", views.UploadImageView, base_name="Item")
 router.register(r"licenses", views.LicenseView, base_name="License")
+router.register(r"purchase", views.PurchaseView, base_name="Purchase")
 
-urlpatterns = [path("", include(router.urls))]
+urlpatterns = [
+    path("", include(router.urls)),
+    path("buy/", views.BuyView.as_view(), name="Buy"),
+]
 
