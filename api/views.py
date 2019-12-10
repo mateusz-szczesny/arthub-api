@@ -24,7 +24,7 @@ class ItemsView(
     mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet,
 ):
     throttle_classes = ()
-    queryset = Item.objects.all()
+    queryset = Item.objects.all().filter(is_archive=False)
     authentication_classes = (TokenAuthentication,)
     serializer_class = ItemSerializer
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
@@ -109,9 +109,7 @@ class LicenseView(
 
 
 class PurchaseView(
-    mixins.ListModelMixin,
-    mixins.RetrieveModelMixin,
-    GenericViewSet,
+    mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet,
 ):
     throttle_classes = ()
     permission_classes = ()
@@ -175,6 +173,7 @@ class BuyView(APIView):
         if serializer.is_valid(raise_exception=True):
             item = Item.objects.get(pk=serializer.validated_data["item"].pk)
             item.pk = None
+            item.is_archive = True
             item.save()
             purchase = Purchase()
             purchase.merchant = request.user

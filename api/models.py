@@ -24,6 +24,7 @@ class Item(models.Model):
     owner = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="items")
     image = models.ImageField(upload_to="images/%Y/%m/%d")
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    is_archive = models.BooleanField(default=False)
 
     @property
     def image_base64(self):
@@ -32,9 +33,14 @@ class Item(models.Model):
     def __str__(self):
         return f"Name: {self.name} | Tags: {self.tags} | Price: {self.price} | Owner: {self.owner.username}"
 
+
 class Purchase(models.Model):
-    merchant = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="purchases")
-    item = models.ForeignKey(Item, on_delete=models.DO_NOTHING, related_name="purchases")
+    merchant = models.ForeignKey(
+        User, on_delete=models.DO_NOTHING, related_name="purchases"
+    )
+    item = models.ForeignKey(
+        Item, on_delete=models.DO_NOTHING, related_name="purchases"
+    )
 
     def __str__(self):
         return f"Merchant: {self.merchant.username} | Item: {self.item.name}"
