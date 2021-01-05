@@ -1,3 +1,5 @@
+[![buddy pipeline](https://app.buddy.works/mzpp/mzpp---p--bitbucket-instance/pipelines/pipeline/300110/badge.svg?token=623647084d320a82f313767f0bfed3e698adc43b4cd84d0f3560ef2bbbabae12 "buddy pipeline")](https://app.buddy.works/mzpp/mzpp---p--bitbucket-instance/pipelines/pipeline/300110)
+
 # ArtHub (Server Application)
 
 Platforma pośrednicząca w sprzedaży
