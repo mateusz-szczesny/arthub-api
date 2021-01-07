@@ -2,9 +2,13 @@
 language: python
 branches:
   only:
+    - master
+    - develop
     - /^((feature)|(bugfix)|(hotfix)|(release))\/.*$/
 python:
   - "3.8.3"
 install:
   - pip install -r requirements.txt
 script: python manage.py test
+  - ./scripts/test_build.sh
+  - if [ "$TRAVIS_BRANCH" = "master" || "$TRAVIS_BRANCH" = "develop" ]; then ./scripts/deploy_source.sh; fi
