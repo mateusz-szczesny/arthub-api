@@ -1,3 +1,4 @@
+# Pipeline for GitHub Repository only
 language: python
 branches:
   only:
