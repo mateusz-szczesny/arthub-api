@@ -7,9 +7,9 @@ from rest_framework import routers
 
 router = routers.DefaultRouter()
 router.register(r"items", views.ItemsView)
-router.register(r"upload", views.UploadImageView, base_name="Item")
-router.register(r"licenses", views.LicenseView, base_name="License")
-router.register(r"purchase", views.PurchaseView, base_name="Purchase")
+router.register(r"upload", views.UploadImageView, basename="Item")
+router.register(r"licenses", views.LicenseView, basename="License")
+router.register(r"purchase", views.PurchaseView, basename="Purchase")
 
 urlpatterns = [
     path("", include(router.urls)),

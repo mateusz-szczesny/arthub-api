@@ -13,7 +13,7 @@ from .serializers import (
 )
 from django.http import HttpResponseBadRequest
 from rest_framework.permissions import IsAuthenticated
-from drf_yasg.utils import swagger_auto_schema
+from drf_yasg2.utils import swagger_auto_schema
 from rest_framework.authentication import TokenAuthentication
 
 
