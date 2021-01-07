@@ -2,7 +2,7 @@
 language: python
 branches:
   only:
-    - /^feature\/.*$/
+    - /^((feature)|(bugfix)|(hotfix)|(release))\/.*$/
 python:
   - "3.8.3"
 install:
