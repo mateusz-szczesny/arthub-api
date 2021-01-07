@@ -15,9 +15,9 @@ from .serializers import (
 )
 from rest_framework.response import Response
 from rest_framework import filters
-from drf_yasg import openapi
+from drf_yasg2 import openapi
 from django_filters.rest_framework import DjangoFilterBackend
-from drf_yasg.utils import swagger_auto_schema
+from drf_yasg2.utils import swagger_auto_schema
 
 # Create your views here.
 class ItemsView(
