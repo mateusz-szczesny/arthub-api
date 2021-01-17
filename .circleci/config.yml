@@ -14,8 +14,29 @@ jobs:
       - run:
           command: ./manage.py test
           name: Test
+  deploy-source:
+    executor: python/default
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "ec:98:97:46:86:4e:77:2c:93:b6:71:17:94:ce:8f:3b"
+      - run:          
+          name: Deploy to Dokku
+          command: |
+            git config user.email "mateusz@mszczesny.com"
+            git config user.name "CircleCI Job"
+            git checkout master
+            git commit --allow-empty -am "Automatic commit from CircleCI"
+            git remote add dokku dokku@mszczesny.com:arthub
+            git push dokku master
 
 workflows:
   main:
     jobs:
       - build-and-test
+      - deploy-source:
+          filters:
+            branches:
+              only:
+                - master
