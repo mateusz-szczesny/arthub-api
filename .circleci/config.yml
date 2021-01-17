@@ -26,7 +26,7 @@ jobs:
           command: |
             git config user.email "mateusz@mszczesny.com"
             git config user.name "CircleCI Job"
-            git checkout master
+            ssh-keyscan -t rsa mszczesny.com >> ~/.ssh/known_hosts
             git commit --allow-empty -am "Automatic commit from CircleCI"
             git remote add dokku dokku@mszczesny.com:arthub
             git push dokku master
@@ -36,6 +36,7 @@ workflows:
     jobs:
       - build-and-test
       - deploy-source:
+          requires: [build-and-test]
           filters:
             branches:
               only:
