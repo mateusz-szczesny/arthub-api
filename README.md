@@ -1,4 +1,3 @@
-[![Buddy](https://app.buddy.works/mzpp/mzpp---p--bitbucket-instance/pipelines/pipeline/300110/badge.svg?token=623647084d320a82f313767f0bfed3e698adc43b4cd84d0f3560ef2bbbabae12 "Buddy")](https://app.buddy.works/mzpp/mzpp---p--bitbucket-instance/pipelines/pipeline/300110)
 [![Travis CI](https://travis-ci.org/mateusz-szczesny/arthub-api.svg)](https://travis-ci.com/github/mateusz-szczesny/arthub-api)
 [![Circle CI](https://circleci.com/gh/mateusz-szczesny/arthub-api.svg?style=svg "CircleCI")](https://app.circleci.com/pipelines/github/mateusz-szczesny/arthub-api)
 
