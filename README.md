@@ -26,9 +26,6 @@ $ #access localhost:post/admin when server running
 ## Manualne wdrożenie serwisu na środowisko testowe
 
 ```bash
-$ git remte add dokku dokku@mszczesny.com:arthub-test
+$ git remote add dokku dokku@mszczesny.com:arthub-test
 & git push dokku develop:master # source_branch:target_branch
 ```
-
-
-test
